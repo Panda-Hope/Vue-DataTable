@@ -1,0 +1,7 @@
+[include]
+./src/**/*.js
+
+[options]
+emoji=true
+module.file_ext=.js
+module.file_ext=.vue

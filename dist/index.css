@@ -1,0 +1,70 @@
+.d-table-wrapper {
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  flex: 1;
+  width: 100%;
+  max-width: 100%;
+  background-color: #fff;
+  font-size: 14px;
+  color: #606266;
+}
+.d-table-wrapper .d-table .d-table-header table,
+.d-table-wrapper .d-table .d-table-tbody table {
+  width: 100%;
+  max-width: 100%;
+  border-collapse: collapse;
+  border-spacing: unset;
+  table-layout: fixed;
+}
+.d-table-wrapper .d-table .d-table-header table th,
+.d-table-wrapper .d-table .d-table-tbody table th,
+.d-table-wrapper .d-table .d-table-header table td,
+.d-table-wrapper .d-table .d-table-tbody table td {
+  box-sizing: border-box;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+  position: relative;
+  text-align: left;
+  border-bottom: 1px solid #ebeef5;
+  padding: 12px 0;
+}
+.d-table-wrapper .d-table .d-table-header table th .d-table-cell,
+.d-table-wrapper .d-table .d-table-tbody table th .d-table-cell,
+.d-table-wrapper .d-table .d-table-header table td .d-table-cell,
+.d-table-wrapper .d-table .d-table-tbody table td .d-table-cell {
+  position: relative;
+  display: inline-block;
+  padding: 0 10px;
+  word-wrap: normal;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+  white-space: normal;
+  word-break: break-all;
+  line-height: 23px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.d-table-wrapper .d-table .d-table-header table th {
+  white-space: nowrap;
+  user-select: none;
+}
+.d-table-wrapper .d-table .d-table-tbody.scroll {
+  overflow-y: scroll;
+}
+.d-table-wrapper .d-table .d-table-tbody table tr:hover td {
+  background-color: #ecf5ff;
+}
+.d-table-wrapper .d-table .d-table-tbody table td {
+  background-color: #fff;
+  transition: background-color 0.25s ease;
+}
+.d-table-wrapper.d-table-border .d-table .d-table-header table th {
+  border-top: 1px solid #ebeef5;
+}
+.d-table-wrapper.d-table-border .d-table .d-table-header table th,
+.d-table-wrapper.d-table-border .d-table .d-table-tbody table th,
+.d-table-wrapper.d-table-border .d-table .d-table-header table td,
+.d-table-wrapper.d-table-border .d-table .d-table-tbody table td {
+  border-right: 1px solid #ebeef5;
+}

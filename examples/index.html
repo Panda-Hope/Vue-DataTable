@@ -1,0 +1,218 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Examples</title>
+    <script src="vue.js"></script>
+    <link rel="stylesheet" href="../dist/index.css" type="text/css" >
+    <style>
+        .test td {
+            background-color: #606266;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <Date-Table :scroll-height="300" ref="dateTable" row-class-name="dddd" :data="dateData" border @select-all="select" style="margin-top: 20px"></Date-Table>
+        <Date-Table :data="dateData2" style="margin-top: 20px" border></Date-Table>
+        <Name-Table :data="dateData" style="margin-top: 20px" border></Name-Table>
+    </div>
+
+    <script src="../dist/vue-datatable.js"></script>
+    <script>
+        const NameTable = VueDataTable.Create([
+            {
+                width: 100,
+                type: "selection"
+            },
+            {
+                width: 200,
+                label: "日期",
+                prop: "date"
+            },
+            {
+                label: "名称",
+                prop: "name"
+            }
+        ]);
+
+        let DateTable = VueDataTable.Create([
+            {
+                prop: "date",
+                label: "#",
+                type: "selection",
+                // checkIfDisabled(index, val, row) {
+                //    return row.num < 10;
+                // }
+            },
+            {
+                prop: "msg",
+                label: "配送信息",
+                // headRender: {
+                //     props: ['column'],
+                //     name: "custom",
+                //     template: "<p>配送信息啊</p>"
+                // },
+                subs: [
+                    {
+                        prop: "num",
+                        label: "姓名",
+                        type: "sortable",
+                        // order: "ascending",
+                        render: {
+                            props: ["index", "val", "row"],
+                            render(h) {
+                                return h("span", {
+                                    style: {
+                                        color: this.val === 3 ? "red" : "black"
+                                    }
+                                }, this.val);
+                            }
+                        }
+                    },
+                    {
+                        prop: "state",
+                        label: "地址",
+                        subs: [
+                            {
+                                prop: "state",
+                                label: "省份",
+                                checkIfDisabled(index, val, row) {
+                                    return row.num === 3;
+                                }
+                                // render: {
+                                //     props: ['index', 'val', 'row'],
+                                //     template: "<p>{{val}} </p>"
+                                // }
+                            },
+                            {
+                                prop: "city",
+                                label: "市区",
+                            },
+                            {
+                                prop: "address",
+                                label: "街道",
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]);
+
+        let app = new Vue({
+            el: "#app",
+            mounted() {
+                setTimeout(() => {
+                    this.$refs.dateTable.$scaledTable(columns => {
+                        columns.push({
+                            label: "日期",
+                            prop: "date"
+                        });
+                    });
+                    this.dateData[3].num = 10;
+                }, 3000)
+            },
+            methods: {
+                select(a, b) {
+                    console.log(a, b)
+                },
+                selectAll(a, b) {
+                    console.log(a, b)
+                }
+            },
+            data() {
+                return {
+                    dateData2: [
+                        {
+                            date: '2016-05-03',
+                            name: "汤姆",
+                            state: 'California',
+                            city: 'Los Angeles',
+                            address: 'No. 189, Grovet, Los Angeles',
+                            zip: 'CA 90036'
+                        },
+                        {
+                            date: '2016-05-03',
+                            name: "汤姆",
+                            state: 'California',
+                            city: 'changsha',
+                            address: 'MapleStory',
+                            zip: 'CA 90036'
+                        },
+                        {
+                            date: '2016-05-03',
+                            name: "汤姆",
+                            state: 'California',
+                            city: 'Los Angeles',
+                            address: 'No. 189, Grove St, Los Angeles',
+                            zip: 'CA 90036'
+                        }
+                    ],
+                    dateData: [{
+                        date: '2016-05-03',
+                        name: 'Timo',
+                        state: 'shanghai',
+                        city: 'changsha',
+                        address: 'No. 189, Grove St, Los Angeles',
+                        zip: 'CA 90036',
+                        num: 1
+                    }, {
+                        date: '2016-05-02',
+                        name: 'Tom',
+                        state: 'California',
+                        city: 'chengdu',
+                        address: 'No. 189, Grove St, Los Angeles',
+                        zip: 'CA 90036',
+                        num: 3
+                    }, {
+                        date: '2016-05-04',
+                        name: 'Tom',
+                        state: 'California',
+                        city: 'shanghai',
+                        address: 'No. 189, Grove St, Los Angeles',
+                        zip: 'CA 90036',
+                        num: 4
+                    }, {
+                        date: '2016-05-01',
+                        name: 'Tom',
+                        state: 'California',
+                        city: 'Los Angeles',
+                        address: 'No. 189, Grove St, Los Angeles',
+                        zip: 'CA 90036',
+                        num: 2
+                    }, {
+                        date: '2016-05-08',
+                        name: 'Tom',
+                        state: 'California',
+                        city: 'Los Angeles',
+                        address: 'No. 189, Grove St, Los Angeles',
+                        zip: 'CA 90036',
+                        num: 5
+                    }, {
+                        date: '2016-05-06',
+                        name: 'Tom',
+                        state: 'California',
+                        city: 'Los Angeles',
+                        address: 'No. 189, Grove St, Los Angeles',
+                        zip: 'CA 90036',
+                        num: 6
+                    }, {
+                        date: '2016-05-07',
+                        name: 'Tom',
+                        state: 'California',
+                        city: 'Los Angeles',
+                        address: 'No. 189, Grove St, Los Angeles',
+                        zip: 'CA 90036',
+                        num: 7
+                    }]
+                };
+            },
+            components: {
+                DateTable,
+                NameTable
+            }
+        });
+    </script>
+</body>
+</html>

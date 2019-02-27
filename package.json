@@ -1,0 +1,29 @@
+{
+  "name": "vue-datatable",
+  "version": "1.0.0",
+  "description": "a data table ui for vue.js",
+  "main": "VueDataTable",
+  "scripts": {
+    "build": "rollup -c",
+    "flow": "flow",
+    "less": "lessc ./src/style/index.less ./dist/index.css"
+  },
+  "author": "Hope",
+  "emain": "494873674@qq.com",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.3.3",
+    "@babel/plugin-external-helpers": "^7.2.0",
+    "@babel/plugin-syntax-flow": "^7.2.0",
+    "@babel/plugin-syntax-jsx": "^7.2.0",
+    "@babel/plugin-transform-flow-strip-types": "^7.2.3",
+    "@babel/preset-env": "^7.3.1",
+    "@vue/babel-helper-vue-jsx-merge-props": "^1.0.0-beta.2",
+    "@vue/babel-plugin-transform-vue-jsx": "^1.0.0-beta.2",
+    "flow-bin": "^0.93.0",
+    "less": "^3.9.0",
+    "rollup-plugin-babel": "^4.3.2",
+    "vue": "^2.6.6"
+  },
+  "dependencies": {}
+}

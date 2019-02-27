@@ -1,0 +1,12 @@
+{
+	"presets": [
+		[
+			"@babel/preset-env",
+			{
+				"modules": false
+			}
+		]
+	],
+	"exclude": "node_modules/**",
+	"plugins": ["@babel/plugin-transform-flow-strip-types", "@vue/babel-plugin-transform-vue-jsx"]
+}

@@ -1,0 +1,109 @@
+@name: d-table;
+
+@base-color: #606266;
+@base-bg-color: #fff;
+@base-hover-color: #ecf5ff;
+
+@cell-base-padding: 12px 0;
+@cell-base-div-padding: 0 10px;
+@cell-padding: @cell-base-padding;
+
+@border-color: #ebeef5;
+@border-width-base: 1px;
+@border-style: solid;
+
+.@{name}-wrapper {
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+    flex: 1;
+    width: 100%;
+    max-width: 100%;
+    background-color: #fff;
+    font-size: 14px;
+    color: @base-color;
+
+    .@{name} {
+        .@{name}-header, .@{name}-tbody {
+            table {
+                width: 100%;
+                max-width: 100%;
+                border-collapse: collapse;
+                border-spacing: unset;
+                table-layout: fixed;
+
+                th, td {
+                    box-sizing: border-box;
+                    text-overflow: ellipsis;
+                    vertical-align: middle;
+                    position: relative;
+                    text-align: left;
+                    border-bottom: @border-width-base @border-style @border-color;
+                    padding: @cell-base-padding;
+
+                    .@{name}-cell {
+                        position: relative;
+                        display: inline-block;
+                        padding: @cell-base-div-padding;
+                        word-wrap: normal;
+                        text-overflow: ellipsis;
+                        vertical-align: middle;
+                        white-space: normal;
+                        word-break: break-all;
+                        line-height: 23px;
+                        width: 100%;
+                        box-sizing: border-box;
+                    }
+                }
+            }
+        }
+
+        .@{name}-header {
+            table {
+                th {
+                    white-space: nowrap;
+                    user-select: none;
+                }
+            }
+        }
+
+        .@{name}-tbody {
+            &.scroll {
+                overflow-y: scroll;
+            }
+
+            table {
+                tr:hover {
+                    td {
+                        background-color: @base-hover-color;
+                    }
+                }
+
+                td {
+                    background-color: @base-bg-color;
+                    transition: background-color .25s ease;
+                }
+            }
+        }
+    }
+
+    &.@{name}-border {
+        .@{name} {
+            .@{name}-header {
+                table {
+                    th {
+                        border-top: @border-width-base @border-style @border-color;
+                    }
+                }
+            }
+
+            .@{name}-header, .@{name}-tbody {
+                table {
+                    th, td {
+                        border-right: @border-width-base @border-style @border-color;
+                    }
+                }
+            }
+        }
+    }
+}
