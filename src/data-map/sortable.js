@@ -1,4 +1,4 @@
-import {cellRender} from "../data-table/index";
+import {cellRender} from "../data-table/body";
 
 function ascending(a, b) {
     return a - b;
@@ -20,7 +20,7 @@ function sortable(el: Object): void {
     let rearrange = (vm, type?: string) => {
         el.order = type;
         isFromSort = true;
-        vm.$forceUpdate();
+        vm.$refs.tbody.$forceUpdate();
     };
 
     el.headRender = function(h, column) {
@@ -35,6 +35,8 @@ function sortable(el: Object): void {
     };
     el.render = function(h, index, val, row) {
         if (!hasSorted) {
+            /* 确保排序与渲染仅发生一次 */
+            hasSorted = true;
             if (!isFromSort) originData = this.tableData.map(i => i);
 
             /* 对需要排序的数据进行映射 */
@@ -64,12 +66,16 @@ function sortable(el: Object): void {
 
             if (isFromSort) {
                 isFromSort = false;
+                this.$refs.tbody.$forceUpdate();                            // 渲染排序后数据
                 this.$emit("sort-change", el.order, el);
+                this.$nextTick(() => hasSorted = false);
+            }else {
+                /* 数据修改、初次绑定 在此重新渲染排序后数据 */
+                this.$nextTick(function () {
+                    this.$refs.tbody.$forceUpdate();
+                    this.$nextTick(() => hasSorted = false);
+                });
             }
-
-            hasSorted = true;
-            this.$forceUpdate();                        // 刷新排序后数据
-            this.$nextTick(() => hasSorted = false);
         }
 
         return existRender ? cellRender(existRender, index, val, row, h, this) : val;

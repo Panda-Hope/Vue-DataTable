@@ -54,7 +54,7 @@ function selection(el: Object): void {
 
     el.headRender = {
         name: "ControlBox",
-        props: ["column"],
+        props: ["column", "tableVm"],
         mounted() {
             controlBox = this;
         },
@@ -74,13 +74,13 @@ function selection(el: Object): void {
                 if (this.disabled) return;
                 this.checked = this.checked !== true;
                 checkAll(controlBox, unitBoxs);
-                this.$parent.$emit("select-all", getAllSelectedRows(this.checked, unitBoxs), el);
+                this.tableVm.$emit("select-all", getAllSelectedRows(this.checked, unitBoxs), el);
             }
         }
     };
     el.render = {
         name: "UintBox",
-        props: ["index", "val", "row"],
+        props: ["index", "val", "row", "tableVm"],
         mounted() {
             unitBoxs.push(this);
         },
@@ -122,7 +122,7 @@ function selection(el: Object): void {
                 if (this.disabled) return;
                 this.checked = this.row._checked = !this.checked;
                 checkControl(controlBox, unitBoxs);
-                this.$parent.$emit("select", getSelectedRows(unitBoxs), el);
+                this.tableVm.$emit("select", getSelectedRows(unitBoxs), el);
             }
         }
     };

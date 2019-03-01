@@ -19,6 +19,7 @@ type Column = {
     width: number,
     render?: Function,
     type?: "string",
+    fixed?: boolean,
     subs?: Array<Column> | Column,
     _checked: boolean,
     _rowspan: number,
@@ -48,7 +49,7 @@ function setGridAttr(level: Array<Object>, rowspan: number, columns: Array<Objec
 /* 递归后序遍历表格化数据，生成表格网状结构并生成表格数据列数组 */
 function makeGrid(table: Array<Object>): Object {
     let columns = [];
-    let level = table[0];
+    let level = table[0] || [];
     let maxRowspan = table.length;
 
     setGridAttr(level, maxRowspan, columns);
@@ -61,7 +62,6 @@ function makeGrid(table: Array<Object>): Object {
 /* 对表格列数据进行层级遍历，将其转换成表格标题视图映射所需的数据结构 */
 function formatColumns(columns: Array<Object>): {theads: Array<Object>, columns: Array<Object>} {
     let table = [];                             // 表头数据格式
-    let dataColumns = [];                       // 表数据列数据格式
     let level = columns;
 
     while (level.length) {
@@ -78,7 +78,6 @@ function formatColumns(columns: Array<Object>): {theads: Array<Object>, columns:
                 }
             }else {
                 resolveDataMap(el);             // 处理特殊数据类型到视图的映射
-                dataColumns.push(el);
             }
         }
         level = nextLevel;
