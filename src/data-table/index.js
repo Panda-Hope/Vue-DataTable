@@ -1,12 +1,7 @@
 import TableColgroup from "./colgroup";
 import TableHead from "./head";
 import TableBody from "./body";
-
-/* Table Model 表格模式常量 */
-const SingleTable = Symbol("SingleTable");              // 默认单表格结构
-const SeparateTable = Symbol("SeparateTable");          // 固定头表格结构
-const FixedTable = Symbol("FixedTable");                // 固定列表格结构
-const CombineTable = Symbol("CombineTable");            // 固定头与列结构
+import {SingleTable, SeparateTable, FixedTable, CombineTable} from "../util/const";
 
 /* 为固定列属性表格重新获取其专属 Head & Columns */
 function getHeadAndColumns(columns: Array<Object>): {theads: Array<Object>, columns: Array<Object>}  {
@@ -84,9 +79,18 @@ function setTbodyRowHeight(vm: Object, referVm: Object): void {
     }
 }
 
+function addEvent(el: Object, event: string, fn: (e, index?: number) => void) {
+    let els = el && el.length ? el : [el];
+
+    for (let i=0;i<els.length;i++) {
+        els[i].addEventListener(event, e => fn(e, i));
+    }
+}
+
 export default ({
     props: {
         scrollHeight: Number,
+        scrollWidth: Number,
         rowClassName: String,
         data: {
             type: Array,
@@ -95,8 +99,7 @@ export default ({
         border: Boolean
     },
     data: {
-        TableMode: SingleTable,
-        registeredFixedWatcher: false,
+
     },
     computed: {
         tableData() {
@@ -105,15 +108,17 @@ export default ({
     },
     methods: {
         computeTableHeight() {
-            let headHeight = this.$refs.thead.$el.offsetHeight;
+            this.$nextTick(function () {
+                let headHeight = this.$refs.thead.$el.offsetHeight;
 
-            setHeadRowHeight(this.$refs.leftHead, headHeight);
-            setHeadRowHeight(this.$refs.rightHead, headHeight);
-            setTbodyRowHeight(this.$refs.leftTbody, this.$refs.tbody);
-            setTbodyRowHeight(this.$refs.rightTbody, this.$refs.tbody);
+                setHeadRowHeight(this.$refs.leftHead, headHeight);
+                setHeadRowHeight(this.$refs.rightHead, headHeight);
+                setTbodyRowHeight(this.$refs.leftTbody, this.$refs.tbody);
+                setTbodyRowHeight(this.$refs.rightTbody, this.$refs.tbody);
+            });
         },
+        /* 确保固定列表格高度一致 */
         registerFixedDataWatcher() {
-            this.registeredFixedWatcher = true;
             this.$nextTick(function () {
                 let thead = this.$refs.thead;
                 let tbody = this.$refs.tbody;
@@ -128,15 +133,91 @@ export default ({
                 };
 
                 thead.$options.updated ? thead.$options.updated.push(updateHeadHeight) : (thead.$options.updated = [updateHeadHeight]);
-                tbody.$options.updated ? tbody.$options.updated.push(updateRowHeight) : (tbody.$options.updated = updateRowHeight);
+                tbody.$options.updated ? tbody.$options.updated.push(updateRowHeight) : (tbody.$options.updated = [updateRowHeight]);
             })
+        },
+        /* 确保固定列表格样式一致 */
+        registerStyleWatcher() {
+            this.$nextTick(function () {
+                let leftColumns = this.$refs.leftTbody.$el.children;
+                let columns = this.$refs.tbody.$el.children;
+                let rightColumns = this.$refs.rightTbody.$el.children;
+                let mouseover = (e, index) => {
+                    leftColumns[index].classList.add("hover");
+                    columns[index].classList.add("hover");
+                    rightColumns[index].classList.add("hover");
+                };
+                let mouseout = (e, index) => {
+                    leftColumns[index].classList.remove("hover");
+                    columns[index].classList.remove("hover");
+                    rightColumns[index].classList.remove("hover");
+                };
+
+                let isScrolling = false;
+                let scroll = () => {
+                    if (!isScrolling) {
+                        isScrolling = true;
+
+                        this.$refs.leftWrapper.classList.add("scroll");
+                        this.$refs.rightWrapper.classList.add("scroll");
+
+                        setTimeout(() => {
+                            isScrolling = false;
+
+                            if (this.$refs.scrollWrapper.scrollLeft === 0) {
+                                this.$refs.leftWrapper.classList.remove("scroll");
+                            } else if (this.$refs.scrollWrapper.scrollLeft + this.$refs.scrollWrapper.offsetWidth === this.$refs.scrollWrapper.children[0].offsetWidth) {
+                                this.$refs.rightWrapper.classList.remove("scroll");
+                            }
+                        }, 300);
+                    }
+                };
+
+                addEvent(leftColumns, "mouseover", mouseover);
+                addEvent(columns, "mouseover", mouseover);
+                addEvent(rightColumns, "mouseover", mouseover);
+
+                addEvent(leftColumns, "mouseout", mouseout);
+                addEvent(columns, "mouseout", mouseout);
+                addEvent(rightColumns, "mouseout", mouseout);
+
+                addEvent(this.$refs.scrollWrapper, "scroll", scroll);                     // 监测表格水平滚动
+            });
+        },
+        /* 确保固定表格同步滚动 */
+        registerScrollWatcher() {
+            this.$nextTick(function () {
+                let ticking = false;
+                let scrollTo = () => {
+                    let leftWrapper = this.$refs.leftHorScrollWrapper;
+                    let rightWrapper = this.$refs.rightHorScrollWrapper;
+                    let wrapper = this.$refs.horScrollWrapper;
+
+                    if (leftWrapper.scrollTop < wrapper.scrollTop) {
+                        leftWrapper.scrollTop = rightWrapper.scrollTop = --wrapper.scrollTop;
+                    }else if (leftWrapper.scrollTop > wrapper.scrollTop) {
+                        leftWrapper.scrollTop = rightWrapper.scrollTop = ++wrapper.scrollTop;
+                    }
+
+                    window.requestAnimationFrame(scrollTo);
+                    ticking = false;
+                };
+                let scroll = () => {
+                    if (!ticking) {
+                        window.requestAnimationFrame(scrollTo);
+                        ticking = true;
+                    }
+                };
+
+                addEvent(this.$refs.horScrollWrapper, "scroll", scroll);
+            });
         }
     },
     render(h) {
         let leftFixed = [];
         let scrolls = [];
         let rightFixed = [];
-        this.TableMode = this.scrollHeight ? SeparateTable : SingleTable;
+        let TableMode = this.TableMode = this.scrollHeight ? SeparateTable : SingleTable;
 
         /* 将列根据固定属性重新分类 */
         this.propColumns.forEach(el => {
@@ -164,11 +245,11 @@ export default ({
         scrolls = scrolls.concat(rightBlankColumns);
 
         if (leftFixed.length || rightFixed.length) {
-            this.TableMode = this.TableMode === SingleTable ? FixedTable : CombineTable;
+            TableMode = this.TableMode = TableMode === SingleTable ? FixedTable : CombineTable;
         }
 
         /* 对不同的表格结构模式匹配不同的模板 */
-        switch (this.TableMode) {
+        switch (TableMode) {
             case SingleTable:
                 this.registeredFixedWatcher = false;
 
@@ -213,57 +294,139 @@ export default ({
                     </div>
                 );
             case FixedTable:
+            case CombineTable:
+                if (!this.scrollWidth) {
+                    console.warn("固定列表格需要执行 \"scrollWidth\" 值");
+                }
+
                 let {theads: leftHeads, columns: leftColumns} = getHeadAndColumns(leftFixed);
                 let {theads: scrollHeads, columns: scrollColumns} = getHeadAndColumns(scrolls);
                 let {theads: rightHeads, columns: rightColumns} = getHeadAndColumns(rightFixed);
 
                 /* 获取固定列表格高度信息，重新渲染视图，这里需要执行些DOM操作 */
-                this.$nextTick(function () {
-                    this.computeTableHeight();
-                });
-                /* 注册数据观察器，当表格数据变化时重新计算高度信息 */
-                !this.registeredFixedWatcher && this.registerFixedDataWatcher();
+                this.computeTableHeight();
 
-                return (
-                    <div class={["d-table-wrapper", this.border && "d-table-border"]}>
-                        <div class="d-table-fixed-left">
-                            <table class="d-table">
-                                <TableColgroup columns={leftColumns}></TableColgroup>
-                                <TableHead ref="leftHead" class="d-table-header" theads={leftHeads}></TableHead>
-                                <TableBody class="d-table-tbody"
-                                           rowClassName={this.rowClassName}
-                                           tableData={this.tableData}
-                                           ref="leftTbody"
-                                           columns={leftColumns}>
-                                </TableBody>
-                            </table>
+                /* 注册固定列表格相关观察器 */
+                if (!this.registeredFixedWatcher) {
+                    this.registeredFixedWatcher = true;
+
+                    this.registerFixedDataWatcher();
+                    this.registerStyleWatcher();
+                    this.registerScrollWatcher();           // 固定列与表头时同步表格滚动
+                }
+
+                /* 返回相应的字符模板 */
+                let template;
+
+                if (TableMode === FixedTable) {
+                    template = (
+                        <div class={["d-table-wrapper", this.border && "d-table-border"]}>
+                            <div class="d-table-fixed-left" ref="leftWrapper">
+                                <table class="d-table">
+                                    <TableColgroup columns={leftColumns}></TableColgroup>
+                                    <TableHead ref="leftHead" class="d-table-header" theads={leftHeads}></TableHead>
+                                    <TableBody class="d-table-tbody"
+                                               rowClassName={this.rowClassName}
+                                               tableData={this.tableData}
+                                               ref="leftTbody"
+                                               columns={leftColumns}>
+                                    </TableBody>
+                                </table>
+                            </div>
+                            <div class="d-table-scroll" ref="scrollWrapper">
+                                <table class="d-table" style={{width: this.scrollWidth + "px"}}>
+                                    <TableColgroup columns={scrollColumns}></TableColgroup>
+                                    <TableHead class="d-table-header" ref="thead" theads={scrollHeads}></TableHead>
+                                    <TableBody ref="tbody"
+                                               class="d-table-tbody"
+                                               rowClassName={this.rowClassName}
+                                               tableData={this.tableData}
+                                               columns={scrollColumns}>
+                                    </TableBody>
+                                </table>
+                            </div>
+                            <div class="d-table-fixed-right scroll" ref="rightWrapper">
+                                <table class="d-table">
+                                    <TableColgroup columns={rightColumns}></TableColgroup>
+                                    <TableHead class="d-table-header" ref="rightHead" theads={rightHeads}></TableHead>
+                                    <TableBody class="d-table-tbody"
+                                               rowClassName={this.rowClassName}
+                                               tableData={this.tableData}
+                                               ref="rightTbody"
+                                               columns={rightColumns}>
+                                    </TableBody>
+                                </table>
+                            </div>
                         </div>
-                        <div class="d-table-scroll">
-                            <table class="d-table">
-                                <TableColgroup columns={scrollColumns}></TableColgroup>
-                                <TableHead class="d-table-header" ref="thead" theads={scrollHeads}></TableHead>
-                                <TableBody ref="tbody"
-                                           class="d-table-tbody"
-                                           rowClassName={this.rowClassName}
-                                           tableData={this.tableData}
-                                           columns={scrollColumns}>
-                                </TableBody>
-                            </table>
+                    );
+                }else {
+                    template = (
+                        <div class={["d-table-wrapper", this.border && "d-table-border"]}>
+                            <div class="d-table-fixed-left" ref="leftWrapper">
+                                <div class="d-table">
+                                    <div class="d-table-header">
+                                        <table>
+                                            <TableColgroup columns={leftColumns}></TableColgroup>
+                                            <TableHead ref="leftHead" theads={leftHeads}></TableHead>
+                                        </table>
+                                    </div>
+                                    <div class="d-table-tbody scroll" ref="leftHorScrollWrapper" style={{maxHeight: this.scrollHeight + "px"}}>
+                                        <table>
+                                            <TableColgroup columns={leftColumns}></TableColgroup>
+                                            <TableBody
+                                                rowClassName={this.rowClassName}
+                                                tableData={this.tableData}
+                                                ref="leftTbody"
+                                                columns={leftColumns}>
+                                            </TableBody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-table-scroll" ref="scrollWrapper">
+                                <div class="d-table" style={{width: this.scrollWidth + "px"}}>
+                                    <div class="d-table-header">
+                                        <table>
+                                            <TableColgroup columns={scrollColumns}></TableColgroup>
+                                            <TableHead ref="thead" theads={scrollHeads}></TableHead>
+                                        </table>
+                                    </div>
+                                    <div class="d-table-tbody scroll" ref="horScrollWrapper" style={{maxHeight: this.scrollHeight + "px"}}>
+                                        <table>
+                                            <TableColgroup columns={scrollColumns}></TableColgroup>
+                                            <TableBody ref="tbody"
+                                                       rowClassName={this.rowClassName}
+                                                       tableData={this.tableData}
+                                                       columns={scrollColumns}>
+                                            </TableBody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-table-fixed-right scroll" ref="rightWrapper">
+                                <div class="d-table">
+                                    <div class="d-table-header">
+                                        <table>
+                                            <TableColgroup columns={rightColumns}></TableColgroup>
+                                            <TableHead  ref="rightHead" theads={rightHeads}></TableHead>
+                                        </table>
+                                    </div>
+                                    <div class="d-table-tbody scroll" ref="rightHorScrollWrapper" style={{maxHeight: this.scrollHeight + "px"}}>
+                                        <table>
+                                            <TableColgroup columns={rightColumns}></TableColgroup>
+                                            <TableBody ref="rightTbody"
+                                                       rowClassName={this.rowClassName}
+                                                       tableData={this.tableData}
+                                                       columns={rightColumns}>
+                                            </TableBody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="d-table-fixed-right">
-                            <table class="d-table">
-                                <TableColgroup columns={rightColumns}></TableColgroup>
-                                <TableHead class="d-table-header" ref="rightHead" theads={rightHeads}></TableHead>
-                                <TableBody class="d-table-tbody"
-                                           rowClassName={this.rowClassName}
-                                           tableData={this.tableData}
-                                           ref="rightTbody"
-                                           columns={rightColumns}>
-                                </TableBody>
-                            </table>
-                        </div>
-                    </div>
-                );
+                    );
+                }
+                return template
         }
     }
 }: Object);

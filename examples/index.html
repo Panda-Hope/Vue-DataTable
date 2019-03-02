@@ -14,9 +14,9 @@
 </head>
 <body>
     <div id="app">
-        <Date-Table :scroll-height="300" ref="dateTable" row-class-name="dddd" :data="dateData" border @select-all="select" style="margin-top: 20px"></Date-Table>
-        <Date-Table :data="dateData2" style="margin-top: 20px" border></Date-Table>
-        <Name-Table :data="dateData" style="margin-top: 20px" border></Name-Table>
+        <Date-Table :scroll-width="2600" :scroll-height="300" ref="dateTable" :data="dateData" border style="margin-top: 20px"></Date-Table>
+        <!--<Date-Table :data="dateData2" style="margin-top: 20px" border></Date-Table>-->
+        <!--<Name-Table :data="dateData" style="margin-top: 20px" border></Name-Table>-->
     </div>
 
     <script src="../dist/vue-datatable.js"></script>
@@ -32,6 +32,7 @@
                 prop: "date"
             },
             {
+                width: 200,
                 label: "名称",
                 prop: "name"
             }
@@ -39,9 +40,22 @@
 
         let DateTable = VueDataTable.Create([
             {
+
                 prop: "date",
-                label: "#",
+                width: 100,
+                fixed: "left",
+                label: "日期",
                 type: "selection",
+                // checkIfDisabled(index, val, row) {
+                //    return row.num < 10;
+                // }
+            },
+            {
+
+                prop: "date",
+                width: 200,
+                fixed: "right",
+                label: "日期",
                 // checkIfDisabled(index, val, row) {
                 //    return row.num < 10;
                 // }
@@ -49,18 +63,15 @@
             {
                 prop: "msg",
                 label: "配送信息",
-                // headRender: {
-                //     props: ['column'],
-                //     name: "custom",
-                //     template: "<p>配送信息啊</p>"
-                // },
                 subs: [
                     {
                         prop: "num",
                         label: "姓名",
+                        width: 180,
                         type: "sortable",
-                        // order: "ascending",
+                        order: "descending",
                         render: {
+                            name: "sp",
                             props: ["index", "val", "row"],
                             render(h) {
                                 return h("span", {
@@ -100,17 +111,77 @@
             }
         ]);
 
+        const dateData = [{
+            date: '2016-05-03',
+            name: 'Timo',
+            state: 'shanghai',
+            city: 'changsha',
+            address: 'No. 189, Grove St, Los Angeles',
+            zip: 'CA 90036',
+            num: 1
+        }, {
+            date: '2016-05-02',
+            name: 'Tom',
+            state: 'California',
+            city: 'chengdu',
+            address: 'No. 189, Grove St, Los Angeles',
+            zip: 'CA 90036',
+            num: 3
+        }, {
+            date: '2016-05-04',
+            name: 'Tom',
+            state: 'California',
+            city: 'shanghai',
+            address: 'No. 189, Grove St, Los Angeles',
+            zip: 'CA 90036',
+            num: 4
+        }, {
+            date: '2016-05-01',
+            name: 'Tom',
+            state: 'California',
+            city: 'Los Angeles',
+            address: 'No. 189, Grove St, Los Angeles',
+            zip: 'CA 90036',
+            num: 2
+        }, {
+            date: '2016-05-08',
+            name: 'Tom',
+            state: 'California',
+            city: 'Los Angeles',
+            address: 'No. 189, Grove St, Los Angeles',
+            zip: 'CA 90036',
+            num: 5
+        }, {
+            date: '2016-05-06',
+            name: 'Tom',
+            state: 'California',
+            city: 'Los Angeles',
+            address: 'No. 189, Grove St, Los Angeles',
+            zip: 'CA 90036',
+            num: 6
+        }, {
+            date: '2016-05-07',
+            name: 'Tom',
+            state: 'California',
+            city: 'Los Angeles',
+            address: 'No. 189, Grove St, Los Angeles',
+            zip: 'CA 90036',
+            num: 7
+        }];
+
         let app = new Vue({
             el: "#app",
             mounted() {
                 setTimeout(() => {
-                    this.$refs.dateTable.$scaledTable(columns => {
-                        columns.push({
-                            label: "日期",
-                            prop: "date"
-                        });
-                    });
-                    this.dateData[3].num = 10;
+                    // this.$refs.dateTable.$scaledTable(columns => {
+                    //     columns.push({
+                    //         label: "日期",
+                    //         prop: "date"
+                    //     });
+                    // });
+                    // this.dateData[3].num = 10;
+                    // this.scrollHeight = 300;
+                    this.dateData[0].state = "是打算大所大所大大大大大是打算大所大所大大大大大是打算大所大所大大大大大是打算大所大所大大大大大";
                 }, 3000)
             },
             methods: {
@@ -123,6 +194,7 @@
             },
             data() {
                 return {
+                    scrollHeight: 0,
                     dateData2: [
                         {
                             date: '2016-05-03',
@@ -149,63 +221,7 @@
                             zip: 'CA 90036'
                         }
                     ],
-                    dateData: [{
-                        date: '2016-05-03',
-                        name: 'Timo',
-                        state: 'shanghai',
-                        city: 'changsha',
-                        address: 'No. 189, Grove St, Los Angeles',
-                        zip: 'CA 90036',
-                        num: 1
-                    }, {
-                        date: '2016-05-02',
-                        name: 'Tom',
-                        state: 'California',
-                        city: 'chengdu',
-                        address: 'No. 189, Grove St, Los Angeles',
-                        zip: 'CA 90036',
-                        num: 3
-                    }, {
-                        date: '2016-05-04',
-                        name: 'Tom',
-                        state: 'California',
-                        city: 'shanghai',
-                        address: 'No. 189, Grove St, Los Angeles',
-                        zip: 'CA 90036',
-                        num: 4
-                    }, {
-                        date: '2016-05-01',
-                        name: 'Tom',
-                        state: 'California',
-                        city: 'Los Angeles',
-                        address: 'No. 189, Grove St, Los Angeles',
-                        zip: 'CA 90036',
-                        num: 2
-                    }, {
-                        date: '2016-05-08',
-                        name: 'Tom',
-                        state: 'California',
-                        city: 'Los Angeles',
-                        address: 'No. 189, Grove St, Los Angeles',
-                        zip: 'CA 90036',
-                        num: 5
-                    }, {
-                        date: '2016-05-06',
-                        name: 'Tom',
-                        state: 'California',
-                        city: 'Los Angeles',
-                        address: 'No. 189, Grove St, Los Angeles',
-                        zip: 'CA 90036',
-                        num: 6
-                    }, {
-                        date: '2016-05-07',
-                        name: 'Tom',
-                        state: 'California',
-                        city: 'Los Angeles',
-                        address: 'No. 189, Grove St, Los Angeles',
-                        zip: 'CA 90036',
-                        num: 7
-                    }]
+                    dateData: [...dateData, ...dateData, ...dateData, ...dateData, ...dateData, ...dateData]
                 };
             },
             components: {

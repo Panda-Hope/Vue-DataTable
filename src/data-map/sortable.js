@@ -37,7 +37,7 @@ function sortable(el: Object): void {
         if (!hasSorted) {
             /* 确保排序与渲染仅发生一次 */
             hasSorted = true;
-            if (!isFromSort) originData = this.tableData.map(i => i);
+            if (!originData) originData = this.data.map(i => i);
 
             /* 对需要排序的数据进行映射 */
             let mapped = originData.map((item, index) => {
@@ -66,13 +66,13 @@ function sortable(el: Object): void {
 
             if (isFromSort) {
                 isFromSort = false;
-                this.$refs.tbody.$forceUpdate();                            // 渲染排序后数据
+                this.$refreshTableData();                              // 渲染排序后数据
                 this.$emit("sort-change", el.order, el);
                 this.$nextTick(() => hasSorted = false);
             }else {
                 /* 数据修改、初次绑定 在此重新渲染排序后数据 */
                 this.$nextTick(function () {
-                    this.$refs.tbody.$forceUpdate();
+                    this.$refreshTableData();
                     this.$nextTick(() => hasSorted = false);
                 });
             }

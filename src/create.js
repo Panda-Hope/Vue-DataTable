@@ -3,12 +3,14 @@ import Vue from "vue";
 import DataTable from "./data-table/index";
 import {isPlainObject, deepClone} from "./util/index";
 import {resolveDataMap} from "./data-map/index";
+import {SingleTable, SeparateTable, FixedTable, CombineTable} from "./util/const";
 
 // flow table 属性
 type Table = {
     border?: boolean,
     rowClassName?: string,                          // 行类
     scrollHeight?: number,                          // 固定表头
+    scrollWidth?: number
 }
 
 // flow Column 类型属性
@@ -97,26 +99,44 @@ function Create(props: Object): Class<Vue> {
     }
 
     let DataTableOptions = deepClone(DataTable);                                    // 确保每次Create都是从模板创建一个新的类
+    let tableData = DataTableOptions.data;
 
     DataTableOptions.data = function () {
         let copyProps= deepClone(props);                                            // 确保表格实例化所得的每个对象是从模板所得的副本, 而不是参数对象本身
         let {theads, columns}= formatColumns(copyProps);
 
-        return {
+        let dataOptions = {
             theads,
             columns,
             propColumns: copyProps
         };
+
+        return Object.assign(dataOptions, tableData);
     };
 
     const VueDataTable = Vue.extend(DataTableOptions);
 
+    /* 可扩展列API */
     VueDataTable.prototype.$scaledTable = function<callback: Function> (fn: callback): void {
         if (typeof fn === "function") fn(this.propColumns);
 
         let columnObj = formatColumns(this.propColumns);
         this.theads = columnObj.theads;
         this.columns = columnObj.columns;
+    };
+
+    /* 表格数据刷新API */
+    VueDataTable.prototype.$refreshTableData = function (): void {
+        if (!this.TableMode || !this.$refs) return;
+
+        if (this.TableMode === SingleTable || this.TableMode === SeparateTable) {
+            this.$refs.tbody.$forceUpdate();
+        }else {
+            /* 固定列表格刷新全部子表格 */
+            this.$refs.tbody.$forceUpdate();
+            this.$refs.leftTbody.$forceUpdate();
+            this.$refs.rightTbody.$forceUpdate();
+        }
     };
 
     return VueDataTable;
