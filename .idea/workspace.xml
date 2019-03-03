@@ -2,13 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c3e7c0b8-9561-4a45-90a4-d9e071bbbd3b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/dist/index.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/vue-datatable.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/vue-datatable.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/examples/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/examples/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/create.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/create.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/data-map/selection.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/data-map/selection.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/data-map/sortable.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/data-map/sortable.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/data-table/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/data-table/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/style/index.less" beforeDir="false" afterPath="$PROJECT_DIR$/src/style/index.less" afterDir="false" />
@@ -24,11 +22,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/examples/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="361">
-              <caret line="183" column="48" selection-start-line="183" selection-start-column="48" selection-end-line="183" selection-end-column="48" />
+            <state relative-caret-position="331">
+              <caret line="50" column="16" selection-start-line="50" selection-start-column="16" selection-end-line="50" selection-end-column="16" />
               <folding>
                 <element signature="n#style#0;n#Date-Table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
@@ -36,27 +34,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/create.js">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/data-map/selection.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-697">
-              <caret line="83" column="9" lean-forward="true" selection-start-line="83" selection-start-column="9" selection-end-line="83" selection-end-column="9" />
-              <folding>
-                <element signature="e#9#31#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/data-table/index.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="191">
-              <caret line="194" lean-forward="true" selection-start-line="194" selection-end-line="194" />
-              <folding>
-                <element signature="e#0#39#0" expanded="true" />
-                <element signature="e#5396#6251#0" />
-              </folding>
+            <state relative-caret-position="279">
+              <caret line="20" column="33" lean-forward="true" selection-start-line="20" selection-start-column="33" selection-end-line="20" selection-end-column="33" />
             </state>
           </provider>
         </entry>
@@ -64,8 +46,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dist/vue-datatable.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="333">
-              <caret line="377" column="53" lean-forward="true" selection-start-line="377" selection-start-column="53" selection-end-line="377" selection-end-column="53" />
+            <state relative-caret-position="-230">
+              <caret line="734" column="41" lean-forward="true" selection-start-line="734" selection-start-column="41" selection-end-line="734" selection-end-column="41" />
             </state>
           </provider>
         </entry>
@@ -73,11 +55,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/style/index.less">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="819">
-              <caret line="39" column="36" lean-forward="true" selection-start-line="39" selection-start-column="36" selection-end-line="39" selection-end-column="36" />
-              <folding>
-                <element signature="e#1737#1901#0" />
-              </folding>
+            <state relative-caret-position="234">
+              <caret line="273" column="18" lean-forward="true" selection-start-line="273" selection-start-column="18" selection-end-line="273" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -86,36 +65,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>length</find>
-      <find>getHeadAndColumns</find>
-      <find>scrollHeight</find>
-      <find>headHeight</find>
-      <find>console.log</find>
-      <find>&lt;div class=&quot;d-table-cell&quot;&gt;</find>
-      <find>tableData</find>
-      <find>headRender</find>
-      <find>TableBody</find>
-      <find>register</find>
-      <find>&quot;tableData&quot;, &quot;columns&quot;, &quot;rowClassName&quot;</find>
-      <find>tbody</find>
-      <find>getBlankColumn</find>
-      <find>isFromSort</find>
-      <find>DataTableOptions</find>
-      <find>computed</find>
-      <find>registerFixedDataWatcher</find>
       <find>registeredFixedWatcher</find>
       <find>leftTbody</find>
       <find>offset</find>
-      <find>addEvent</find>
       <find>this.$refs.rightWrapper</find>
       <find>rightWrapper</find>
       <find>isPlainObject</find>
       <find>setTimeout</find>
-      <find>TableMode</find>
       <find>scroll</find>
-      <find>registerScrollWatcher</find>
       <find>horScrollWrapper</find>
       <find>scrollWrapper</find>
+      <find>collapse</find>
+      <find>wrapper</find>
+      <find>border</find>
+      <find>tr</find>
+      <find>fixed</find>
+      <find>TableMode</find>
+      <find>addEvent</find>
+      <find>registerScrollWatcher</find>
+      <find>sortable</find>
+      <find>propColumns</find>
+      <find>$scaledTable</find>
+      <find>TableBody</find>
+      <find>switch</find>
+      <find>tbody</find>
+      <find>$refreshTableData</find>
+      <find>order</find>
+      <find>console.log</find>
+      <find>c0c4cc</find>
+      <find>column.label</find>
+      <find>checkbox</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/src</dir>
@@ -150,17 +129,17 @@
         <option value="$PROJECT_DIR$/src/data-table/test.js" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/src/data-table/colgroup.js" />
-        <option value="$PROJECT_DIR$/src/data-map/selection.js" />
         <option value="$PROJECT_DIR$/src/data-table/head.js" />
         <option value="$PROJECT_DIR$/src/data-table/body.js" />
         <option value="$PROJECT_DIR$/src/data-map/index.js" />
         <option value="$PROJECT_DIR$/src/util/const.js" />
         <option value="$PROJECT_DIR$/src/create.js" />
-        <option value="$PROJECT_DIR$/src/data-map/sortable.js" />
-        <option value="$PROJECT_DIR$/src/style/index.less" />
-        <option value="$PROJECT_DIR$/dist/vue-datatable.js" />
         <option value="$PROJECT_DIR$/src/data-table/index.js" />
+        <option value="$PROJECT_DIR$/src/data-map/sortable.js" />
+        <option value="$PROJECT_DIR$/dist/vue-datatable.js" />
+        <option value="$PROJECT_DIR$/src/style/index.less" />
         <option value="$PROJECT_DIR$/examples/index.html" />
+        <option value="$PROJECT_DIR$/src/data-map/selection.js" />
       </list>
     </option>
   </component>
@@ -180,6 +159,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -230,7 +210,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -277,11 +256,12 @@
       <workItem from="1550383156978" duration="59069000" />
       <workItem from="1550595795712" duration="117043000" />
       <workItem from="1551058508500" duration="35511000" />
+      <workItem from="1551574564705" duration="15780000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="313979000" />
+    <option name="totallyTimeSpent" value="332021000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -434,13 +414,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/data-table/test.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="21">
-          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/data-table/test.js" />
     <entry file="file://$PROJECT_DIR$/src/data-table/colgroup.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="147">
@@ -455,23 +429,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/data-map/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="6" column="44" selection-start-line="6" selection-start-column="44" selection-end-line="6" selection-end-column="44" />
-          <folding>
-            <element signature="e#9#45#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/data-table/body.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="12" column="4" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/util/const.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="126">
@@ -482,20 +439,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/data-map/sortable.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="402">
-          <caret line="59" column="13" lean-forward="true" selection-start-line="59" selection-start-column="13" selection-end-line="59" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/data-map/selection.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="8" column="1" lean-forward="true" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/util/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="42">
@@ -503,51 +446,78 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/style/index.less">
+    <entry file="file://$PROJECT_DIR$/src/data-map/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="819">
-          <caret line="39" column="36" lean-forward="true" selection-start-line="39" selection-start-column="36" selection-end-line="39" selection-end-column="36" />
+        <state relative-caret-position="206">
+          <caret line="10" column="5" selection-start-line="10" selection-start-column="5" selection-end-line="10" selection-end-column="5" />
           <folding>
-            <element signature="e#1737#1901#0" />
+            <element signature="e#9#45#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/data-table/body.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="27" column="60" lean-forward="true" selection-start-line="27" selection-start-column="60" selection-end-line="27" selection-end-column="60" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/create.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-697">
-          <caret line="83" column="9" lean-forward="true" selection-start-line="83" selection-start-column="9" selection-end-line="83" selection-end-column="9" />
+        <state relative-caret-position="2541">
+          <caret line="121" lean-forward="true" selection-start-line="121" selection-end-line="121" />
           <folding>
             <element signature="e#9#31#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dist/vue-datatable.js">
+    <entry file="file://$PROJECT_DIR$/src/data-table/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="333">
-          <caret line="377" column="53" lean-forward="true" selection-start-line="377" selection-start-column="53" selection-end-line="377" selection-end-column="53" />
+        <state relative-caret-position="375">
+          <caret line="261" column="48" selection-start-line="261" selection-start-column="48" selection-end-line="261" selection-end-column="48" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/data-table/index.js">
+    <entry file="file://$PROJECT_DIR$/src/data-map/sortable.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="191">
-          <caret line="194" lean-forward="true" selection-start-line="194" selection-end-line="194" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-            <element signature="e#5396#6251#0" />
-          </folding>
+        <state relative-caret-position="462">
+          <caret line="22" column="31" lean-forward="true" selection-start-line="22" selection-start-column="31" selection-end-line="22" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/style/index.less">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="273" column="18" lean-forward="true" selection-start-line="273" selection-start-column="18" selection-end-line="273" selection-end-column="18" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/examples/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
-          <caret line="183" column="48" selection-start-line="183" selection-start-column="48" selection-end-line="183" selection-end-column="48" />
+        <state relative-caret-position="331">
+          <caret line="50" column="16" selection-start-line="50" selection-start-column="16" selection-end-line="50" selection-end-column="16" />
           <folding>
             <element signature="n#style#0;n#Date-Table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/vue-datatable.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-230">
+          <caret line="734" column="41" lean-forward="true" selection-start-line="734" selection-start-column="41" selection-end-line="734" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/data-map/selection.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="279">
+          <caret line="20" column="33" lean-forward="true" selection-start-line="20" selection-start-column="33" selection-end-line="20" selection-end-column="33" />
         </state>
       </provider>
     </entry>

@@ -358,6 +358,8 @@ var VueDataTable = (function (Vue) {
             addEvent(this.$refs.scrollWrapper, "scroll", scroll); // 监测表格水平滚动
           });
         },
+
+        /* 确保固定表格同步滚动 */
         registerScrollWatcher: function registerScrollWatcher() {
           this.$nextTick(function () {
             var _this3 = this;
@@ -371,11 +373,12 @@ var VueDataTable = (function (Vue) {
 
               if (leftWrapper.scrollTop < wrapper.scrollTop) {
                 leftWrapper.scrollTop = rightWrapper.scrollTop = --wrapper.scrollTop;
+                window.requestAnimationFrame(scrollTo);
               } else if (leftWrapper.scrollTop > wrapper.scrollTop) {
                 leftWrapper.scrollTop = rightWrapper.scrollTop = ++wrapper.scrollTop;
+                window.requestAnimationFrame(scrollTo);
               }
 
-              window.requestAnimationFrame(scrollTo);
               ticking = false;
             };
 
@@ -406,20 +409,20 @@ var VueDataTable = (function (Vue) {
             scrolls.push(el);
           }
         });
-        var leftBlankColumns = leftFixed.map(function (el) {
-          var blank = {};
-          getBlankColumn(el, blank);
-          return blank;
-        });
-        var rightBlankColumns = rightFixed.map(function (el) {
-          var blank = {};
-          getBlankColumn(el, blank);
-          return blank;
-        });
-        scrolls = leftBlankColumns.concat(scrolls);
-        scrolls = scrolls.concat(rightBlankColumns);
 
         if (leftFixed.length || rightFixed.length) {
+          var leftBlankColumns = leftFixed.map(function (el) {
+            var blank = {};
+            getBlankColumn(el, blank);
+            return blank;
+          });
+          var rightBlankColumns = rightFixed.map(function (el) {
+            var blank = {};
+            getBlankColumn(el, blank);
+            return blank;
+          });
+          scrolls = leftBlankColumns.concat(scrolls);
+          scrolls = scrolls.concat(rightBlankColumns);
           TableMode = this.TableMode = TableMode === SingleTable ? FixedTable : CombineTable;
         }
         /* 对不同的表格结构模式匹配不同的模板 */
@@ -489,7 +492,7 @@ var VueDataTable = (function (Vue) {
 
           case FixedTable:
           case CombineTable:
-            if (!this.scrollWidth) {
+            if (TableMode === CombineTable && !this.scrollWidth) {
               console.warn("固定列表格需要执行 \"scrollWidth\" 值");
             }
 
@@ -514,7 +517,7 @@ var VueDataTable = (function (Vue) {
               this.registeredFixedWatcher = true;
               this.registerFixedDataWatcher();
               this.registerStyleWatcher();
-              this.registerScrollWatcher(); // 固定列与表头时同步表格滚动
+              this.TableMode === CombineTable && this.registerScrollWatcher(); // 固定列与表头时同步表格滚动
             }
             /* 返回相应的字符模板 */
 
@@ -720,11 +723,13 @@ var VueDataTable = (function (Vue) {
 
     function checkControl(control, unitBoxs) {
       var checkedCount = 0;
+      var boxsLength = unitBoxs.length;
       unitBoxs.forEach(function (box) {
+        if (box.disabled) return boxsLength--;
         if (box.checked === true) checkedCount++;
       });
 
-      if (checkedCount === unitBoxs.length) {
+      if (checkedCount === boxsLength) {
         control.checked = true;
       } else if (checkedCount > 0) {
         control.checked = "intermediate";
@@ -767,8 +772,12 @@ var VueDataTable = (function (Vue) {
           controlBox = this;
         },
         render: function render(h) {
-          return h("input", {
-            "ref": "controlBox",
+          return h("label", {
+            "class": ["checkbox-wrapper", this.checked && (this.checked === true ? "checked" : "intermediate"), this.disabled && "disabled"]
+          }, [h("span", {
+            "class": "checkbox"
+          }, [h("input", {
+            "class": "input",
             "attrs": {
               "type": "checkbox",
               "disabled": this.disabled
@@ -779,7 +788,9 @@ var VueDataTable = (function (Vue) {
             "domProps": {
               "checked": this.checked
             }
-          });
+          }), h("span", {
+            "class": "checkbox-inner"
+          })])]);
         },
         data: function data() {
           return {
@@ -824,8 +835,12 @@ var VueDataTable = (function (Vue) {
           }
 
           this.checked = !!this.row._checked;
-          return h("input", {
-            "ref": "unitBox",
+          return h("label", {
+            "class": ["checkbox-wrapper", this.checked && "checked", this.disabled && "disabled"]
+          }, [h("span", {
+            "class": "checkbox"
+          }, [h("input", {
+            "class": "input",
             "attrs": {
               "type": "checkbox",
               "disabled": this.disabled
@@ -836,7 +851,10 @@ var VueDataTable = (function (Vue) {
             "domProps": {
               "checked": this.checked
             }
-          });
+          }), h("span", {
+            "class": "checkbox-inner"
+          })])]) // <input ref="unitBox" type="checkbox" disabled={this.disabled} onChange={this.select} checked={this.checked} />
+          ;
         },
         data: function data() {
           return {
@@ -879,33 +897,31 @@ var VueDataTable = (function (Vue) {
       var existRender = el.render; // 与原有render相兼容
 
       var rearrange = function rearrange(vm, type) {
-        el.order = type;
+        el.order = el.order !== type ? type : undefined;
         isFromSort = true;
-        vm.$refs.tbody.$forceUpdate();
+        vm.$refreshTableData();
       };
 
       el.headRender = function (h, column) {
         var _this = this;
 
-        return h("div", [h("span", [column.label]), h("button", {
+        return [h("span", [column.label]), h("span", {
+          "class": "caret-wrapper"
+        }, [h("i", {
+          "class": ["up-caret", column.order === "ascending" && "active"],
           "on": {
             "click": function click() {
               return rearrange(_this, "ascending");
             }
           }
-        }, ["\u5347\u5E8F"]), h("button", {
+        }), h("i", {
+          "class": ["down-caret", column.order === "descending" && "active"],
           "on": {
             "click": function click() {
               return rearrange(_this, "descending");
             }
           }
-        }, ["\u964D\u5E8F"]), h("button", {
-          "on": {
-            "click": function click() {
-              return rearrange(_this);
-            }
-          }
-        }, ["\u9ED8\u8BA4"])]);
+        })])];
       };
 
       el.render = function (h, index, val, row) {

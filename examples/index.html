@@ -14,7 +14,7 @@
 </head>
 <body>
     <div id="app">
-        <Date-Table :scroll-width="2600" :scroll-height="300" ref="dateTable" :data="dateData" border style="margin-top: 20px"></Date-Table>
+        <Date-Table :scroll-width="2600" ref="dateTable" :data="dateData" border style="margin-top: 20px"></Date-Table>
         <!--<Date-Table :data="dateData2" style="margin-top: 20px" border></Date-Table>-->
         <!--<Name-Table :data="dateData" style="margin-top: 20px" border></Name-Table>-->
     </div>
@@ -46,15 +46,15 @@
                 fixed: "left",
                 label: "日期",
                 type: "selection",
-                // checkIfDisabled(index, val, row) {
-                //    return row.num < 10;
-                // }
+                checkIfDisabled(index, val, row) {
+                   return row.num > 5;
+                }
             },
             {
 
                 prop: "date",
                 width: 200,
-                fixed: "right",
+                // fixed: "right",
                 label: "日期",
                 // checkIfDisabled(index, val, row) {
                 //    return row.num < 10;
@@ -70,17 +70,17 @@
                         width: 180,
                         type: "sortable",
                         order: "descending",
-                        render: {
-                            name: "sp",
-                            props: ["index", "val", "row"],
-                            render(h) {
-                                return h("span", {
-                                    style: {
-                                        color: this.val === 3 ? "red" : "black"
-                                    }
-                                }, this.val);
-                            }
-                        }
+                        // render: {
+                        //     name: "sp",
+                        //     props: ["index", "val", "row"],
+                        //     render(h) {
+                        //         return h("span", {
+                        //             style: {
+                        //                 color: this.val === 3 ? "red" : "black"
+                        //             }
+                        //         }, this.val);
+                        //     }
+                        // }
                     },
                     {
                         prop: "state",
@@ -167,22 +167,75 @@
             address: 'No. 189, Grove St, Los Angeles',
             zip: 'CA 90036',
             num: 7
+        }, {
+            date: '2016-05-07',
+            name: 'Tom',
+            state: 'California',
+            city: 'Los Angeles',
+            address: 'No. 189, Grove St, Los Angeles',
+            zip: 'CA 90036',
+            num: 7
+        }, {
+            date: '2016-05-07',
+            name: 'Tom',
+            state: 'California',
+            city: 'Los Angeles',
+            address: 'No. 189, Grove St, Los Angeles',
+            zip: 'CA 90036',
+            num: 7
+        }, {
+            date: '2016-05-07',
+            name: 'Tom',
+            state: 'California',
+            city: 'Los Angeles',
+            address: 'No. 189, Grove St, Los Angeles',
+            zip: 'CA 90036',
+            num: 7
+        }, {
+            date: '2016-05-07',
+            name: 'Tom',
+            state: 'California',
+            city: 'Los Angeles',
+            address: 'No. 189, Grove St, Los Angeles',
+            zip: 'CA 90036',
+            num: 7
+        }, {
+            date: '2016-05-07',
+            name: 'Tom',
+            state: 'California',
+            city: 'Los Angeles',
+            address: 'No. 189, Grove St, Los Angeles',
+            zip: 'CA 90036',
+            num: 7
         }];
+
+        let arr = [{
+            date: '2016-05-03',
+            name: 'Timo',
+            state: 'shanghai',
+            city: 'changsha',
+            address: 'No. 189, Grove St, Los Angeles',
+            zip: 'CA 90036',
+            num: 1
+        }];
+
+        // for (var i=0;i<3;i++) {
+        //     dateData.forEach(i => arr.push(i));
+        // }
 
         let app = new Vue({
             el: "#app",
             mounted() {
-                setTimeout(() => {
-                    // this.$refs.dateTable.$scaledTable(columns => {
-                    //     columns.push({
-                    //         label: "日期",
-                    //         prop: "date"
-                    //     });
-                    // });
-                    // this.dateData[3].num = 10;
-                    // this.scrollHeight = 300;
-                    this.dateData[0].state = "是打算大所大所大大大大大是打算大所大所大大大大大是打算大所大所大大大大大是打算大所大所大大大大大";
-                }, 3000)
+                // setTimeout(()=> {
+                //     dateData.forEach(i => {
+                //         i.num += 10;
+                //     });
+                //     setTimeout(()=> {
+                //         dateData.forEach(i => {
+                //             i.num -= 20;
+                //         })
+                //     }, 4000)
+                // }, 4000)
             },
             methods: {
                 select(a, b) {
@@ -221,7 +274,7 @@
                             zip: 'CA 90036'
                         }
                     ],
-                    dateData: [...dateData, ...dateData, ...dateData, ...dateData, ...dateData, ...dateData]
+                    dateData: dateData
                 };
             },
             components: {

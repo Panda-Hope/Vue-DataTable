@@ -195,14 +195,16 @@ export default ({
 
                     if (leftWrapper.scrollTop < wrapper.scrollTop) {
                         leftWrapper.scrollTop = rightWrapper.scrollTop = --wrapper.scrollTop;
+                        window.requestAnimationFrame(scrollTo);
                     }else if (leftWrapper.scrollTop > wrapper.scrollTop) {
                         leftWrapper.scrollTop = rightWrapper.scrollTop = ++wrapper.scrollTop;
+                        window.requestAnimationFrame(scrollTo);
                     }
 
-                    window.requestAnimationFrame(scrollTo);
                     ticking = false;
                 };
                 let scroll = () => {
+
                     if (!ticking) {
                         window.requestAnimationFrame(scrollTo);
                         ticking = true;
@@ -230,21 +232,20 @@ export default ({
             }
         });
 
-        let leftBlankColumns = leftFixed.map(el => {
-            let blank = {};
-            getBlankColumn(el, blank);
-            return blank;
-        });
-        let rightBlankColumns = rightFixed.map(el => {
-            let blank = {};
-            getBlankColumn(el, blank);
-            return blank;
-        });
-
-        scrolls = leftBlankColumns.concat(scrolls);
-        scrolls = scrolls.concat(rightBlankColumns);
-
         if (leftFixed.length || rightFixed.length) {
+            let leftBlankColumns = leftFixed.map(el => {
+                let blank = {};
+                getBlankColumn(el, blank);
+                return blank;
+            });
+            let rightBlankColumns = rightFixed.map(el => {
+                let blank = {};
+                getBlankColumn(el, blank);
+                return blank;
+            });
+
+            scrolls = leftBlankColumns.concat(scrolls);
+            scrolls = scrolls.concat(rightBlankColumns);
             TableMode = this.TableMode = TableMode === SingleTable ? FixedTable : CombineTable;
         }
 
@@ -295,7 +296,7 @@ export default ({
                 );
             case FixedTable:
             case CombineTable:
-                if (!this.scrollWidth) {
+                if (TableMode === CombineTable && !this.scrollWidth) {
                     console.warn("固定列表格需要执行 \"scrollWidth\" 值");
                 }
 
@@ -312,7 +313,7 @@ export default ({
 
                     this.registerFixedDataWatcher();
                     this.registerStyleWatcher();
-                    this.registerScrollWatcher();           // 固定列与表头时同步表格滚动
+                    this.TableMode === CombineTable && this.registerScrollWatcher();           // 固定列与表头时同步表格滚动
                 }
 
                 /* 返回相应的字符模板 */

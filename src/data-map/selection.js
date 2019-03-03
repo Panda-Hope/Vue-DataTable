@@ -10,11 +10,13 @@ function checkAll(control: Object, unitBoxs: Array<Object>): void {
 
 function checkControl(control: Object, unitBoxs: Array<Object>): void {
     let checkedCount = 0;
+    let boxsLength = unitBoxs.length
 
     unitBoxs.forEach(box => {
+        if (box.disabled) return boxsLength--;
         if (box.checked === true) checkedCount++;
     });
-    if (checkedCount === unitBoxs.length) {
+    if (checkedCount === boxsLength) {
         control.checked = true;
     }else if (checkedCount > 0) {
         control.checked = "intermediate";
@@ -60,7 +62,16 @@ function selection(el: Object): void {
         },
         render(h) {
             return (
-                <input ref="controlBox" type="checkbox" disabled={this.disabled} onChange={this.selectAll} checked={this.checked} />
+                <label class={["checkbox-wrapper", this.checked && (this.checked === true ? "checked" : "intermediate"), this.disabled && "disabled"]}>
+                    <span class="checkbox">
+                        <input class="input"
+                               type="checkbox"
+                               disabled={this.disabled}
+                               onChange={this.selectAll}
+                               checked={this.checked}/>
+                        <span class="checkbox-inner"></span>
+                    </span>
+                </label>
             );
         },
         data() {
@@ -108,7 +119,18 @@ function selection(el: Object): void {
 
             this.checked = !!this.row._checked;
             return (
-                <input ref="unitBox" type="checkbox" disabled={this.disabled} onChange={this.select} checked={this.checked} />
+                <label
+                    class={["checkbox-wrapper", this.checked && "checked", this.disabled && "disabled"]}>
+                    <span class="checkbox">
+                        <input class="input"
+                               type="checkbox"
+                               disabled={this.disabled}
+                               onChange={this.select}
+                               checked={this.checked}/>
+                        <span class="checkbox-inner"></span>
+                    </span>
+                </label>
+                // <input ref="unitBox" type="checkbox" disabled={this.disabled} onChange={this.select} checked={this.checked} />
             );
         },
         data() {

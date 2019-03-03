@@ -18,20 +18,19 @@ function sortable(el: Object): void {
     let hasSorted = false;                          // 确保每次视图更新前仅触发一次排序
     let existRender = el.render;                    // 与原有render相兼容
     let rearrange = (vm, type?: string) => {
-        el.order = type;
+        el.order = el.order !== type ? type : undefined;
         isFromSort = true;
-        vm.$refs.tbody.$forceUpdate();
+        vm.$refreshTableData();
     };
 
     el.headRender = function(h, column) {
-        return (
-            <div>
-                <span>{column.label}</span>
-                <button onClick={() => rearrange(this, "ascending")}>升序</button>
-                <button onClick={() => rearrange(this, "descending")}>降序</button>
-                <button onClick={() => rearrange(this)}>默认</button>
-            </div>
-        );
+        return [
+            <span>{column.label}</span>,
+            <span class="caret-wrapper">
+                <i class={["up-caret", column.order === "ascending" && "active"]} onClick={() => rearrange(this, "ascending")}></i>
+                <i class={["down-caret", column.order === "descending" && "active"]} onClick={() => rearrange(this, "descending")}></i>
+            </span>
+        ];
     };
     el.render = function(h, index, val, row) {
         if (!hasSorted) {
