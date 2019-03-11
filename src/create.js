@@ -62,7 +62,7 @@ function makeGrid(table: Array<Object>): Object {
 }
 
 /* 对表格列数据进行层级遍历，将其转换成表格标题视图映射所需的数据结构 */
-function formatColumns(columns: Array<Object>): {theads: Array<Object>, columns: Array<Object>} {
+function formatColumns(columns: Array<Object>, vm: Object): {theads: Array<Object>, columns: Array<Object>} {
     let table = [];                             // 表头数据格式
     let level = columns;
 
@@ -79,7 +79,7 @@ function formatColumns(columns: Array<Object>): {theads: Array<Object>, columns:
                     nextLevel.push(el.subs[j]);
                 }
             }else {
-                resolveDataMap(el);             // 处理特殊数据类型到视图的映射
+                resolveDataMap(el, vm);             // 处理特殊数据类型到视图的映射
             }
         }
         level = nextLevel;
@@ -93,9 +93,10 @@ function formatColumns(columns: Array<Object>): {theads: Array<Object>, columns:
 }
 
 /* 创建一个新的表格组件 */
-function Create(props: Object): Class<Vue> {
+function Create(props: Object): ?Class<Vue> {
     if (!Array.isArray(props)) {
         console.error("props 只能接受数组列对象");
+        return;
     }
 
     let DataTableOptions = deepClone(DataTable);                                    // 确保每次Create都是从模板创建一个新的类
@@ -103,7 +104,7 @@ function Create(props: Object): Class<Vue> {
 
     DataTableOptions.data = function () {
         let copyProps= deepClone(props);                                            // 确保表格实例化所得的每个对象是从模板所得的副本, 而不是参数对象本身
-        let {theads, columns}= formatColumns(copyProps);
+        let {theads, columns}= formatColumns(copyProps, this);
 
         let dataOptions = {
             theads,
@@ -120,7 +121,7 @@ function Create(props: Object): Class<Vue> {
     VueDataTable.prototype.$scaledTable = function<callback: Function> (fn: callback): void {
         if (typeof fn === "function") fn(this.propColumns);
 
-        let columnObj = formatColumns(this.propColumns);
+        let columnObj = formatColumns(this.propColumns, this);
         this.theads = columnObj.theads;
         this.columns = columnObj.columns;
     };

@@ -10,7 +10,7 @@ function checkAll(control: Object, unitBoxs: Array<Object>): void {
 
 function checkControl(control: Object, unitBoxs: Array<Object>): void {
     let checkedCount = 0;
-    let boxsLength = unitBoxs.length
+    let boxsLength = unitBoxs.length;
 
     unitBoxs.forEach(box => {
         if (box.disabled) return boxsLength--;

@@ -6,4 +6,5 @@ const DataTable = {
     Create,
     addDataMap
 };
+
 export default DataTable;

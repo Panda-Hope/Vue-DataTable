@@ -14,8 +14,8 @@ function addDataMap(name: string, fn: Function) {
     }
 }
 
-function resolveDataMap(el: Object): void {
-    if (el.type && dataMapNames[el.type]) dataMapNames[el.type](el);
+function resolveDataMap(el: Object, vm: Object): void {
+    if (el.type && dataMapNames[el.type]) dataMapNames[el.type](el, vm);
 }
 
 /* 注册内置数据映射 */

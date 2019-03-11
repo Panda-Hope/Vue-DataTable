@@ -873,12 +873,45 @@ var VueDataTable = (function (Vue) {
       };
     }
 
+    function strcmp(a, b) {
+      var i = 0;
+      var n = Math.max(a.length, b.length);
+
+      for (; i < n && a.charAt(i) === b.charAt(i); ++i) {
+      }
+
+      if (i === n) return 0;
+      return a.charAt(i) > b.charAt(i) ? 1 : -1;
+    }
+
     function ascending(a, b) {
-      return a - b;
+      if (typeof a === "number") {
+        return a - b;
+      } else if (typeof a === "string") {
+        var dateA = new Date(a);
+        var dateB = new Date(b);
+
+        if (dateA != "Invalid Date") {
+          return dateA - dateB;
+        }
+
+        return strcmp(a, b);
+      }
     }
 
     function descending(a, b) {
-      return b - a;
+      if (typeof a === "number") {
+        return b - a;
+      } else if (typeof a === "string") {
+        var dateA = new Date(a);
+        var dateB = new Date(b);
+
+        if (dateA != "Invalid Date") {
+          return dateB - dateA;
+        }
+
+        return strcmp(b, a);
+      }
     }
 
     function getSortMethod(fn) {
@@ -887,7 +920,7 @@ var VueDataTable = (function (Vue) {
       };
     }
 
-    function sortable(el) {
+    function sortable(el, vm) {
       var originData; // 保留原始数据序列
 
       var isFromSort = false; // 数据更新是否来源于排序
@@ -899,8 +932,23 @@ var VueDataTable = (function (Vue) {
       var rearrange = function rearrange(vm, type) {
         el.order = el.order !== type ? type : undefined;
         isFromSort = true;
+        vm.sortingColumn = el.prop; // 设置当前排序列
+
+        vm.sortingColumns.forEach(function (column) {
+          if (column.prop !== el.prop) {
+            column.order = undefined;
+          }
+        });
         vm.$refreshTableData();
       };
+      /* 收集同一表格中排序列对象 */
+
+
+      if (!vm.sortingColumns) vm.sortingColumns = [];
+      vm.sortingColumns.push(el);
+      /* 将Order设置成响应式数据 */
+
+      Vue.set(el, "order", el.order);
 
       el.headRender = function (h, column) {
         var _this = this;
@@ -925,7 +973,7 @@ var VueDataTable = (function (Vue) {
       };
 
       el.render = function (h, index, val, row) {
-        if (!hasSorted) {
+        if (!hasSorted && this.sortingColumn === el.prop) {
           /* 确保排序与渲染仅发生一次 */
           hasSorted = true;
           if (!originData) originData = this.data.map(function (i) {
@@ -996,8 +1044,8 @@ var VueDataTable = (function (Vue) {
       }
     }
 
-    function resolveDataMap(el) {
-      if (el.type && dataMapNames[el.type]) dataMapNames[el.type](el);
+    function resolveDataMap(el, vm) {
+      if (el.type && dataMapNames[el.type]) dataMapNames[el.type](el, vm);
     }
     /* 注册内置数据映射 */
 
@@ -1051,7 +1099,7 @@ var VueDataTable = (function (Vue) {
     /* 对表格列数据进行层级遍历，将其转换成表格标题视图映射所需的数据结构 */
 
 
-    function formatColumns(columns) {
+    function formatColumns(columns, vm) {
       var table = []; // 表头数据格式
 
       var level = columns;
@@ -1069,7 +1117,7 @@ var VueDataTable = (function (Vue) {
               nextLevel.push(el.subs[j]);
             }
           } else {
-            resolveDataMap(el); // 处理特殊数据类型到视图的映射
+            resolveDataMap(el, vm); // 处理特殊数据类型到视图的映射
           }
         }
 
@@ -1088,6 +1136,7 @@ var VueDataTable = (function (Vue) {
     function Create(props) {
       if (!Array.isArray(props)) {
         console.error("props 只能接受数组列对象");
+        return;
       }
 
       var DataTableOptions = deepClone(DataTable); // 确保每次Create都是从模板创建一个新的类
@@ -1097,7 +1146,7 @@ var VueDataTable = (function (Vue) {
       DataTableOptions.data = function () {
         var copyProps = deepClone(props); // 确保表格实例化所得的每个对象是从模板所得的副本, 而不是参数对象本身
 
-        var _formatColumns = formatColumns(copyProps),
+        var _formatColumns = formatColumns(copyProps, this),
             theads = _formatColumns.theads,
             columns = _formatColumns.columns;
 
@@ -1114,7 +1163,7 @@ var VueDataTable = (function (Vue) {
 
       VueDataTable.prototype.$scaledTable = function (fn) {
         if (typeof fn === "function") fn(this.propColumns);
-        var columnObj = formatColumns(this.propColumns);
+        var columnObj = formatColumns(this.propColumns, this);
         this.theads = columnObj.theads;
         this.columns = columnObj.columns;
       };

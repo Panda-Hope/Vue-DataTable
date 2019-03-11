@@ -55,6 +55,7 @@
                 prop: "date",
                 width: 200,
                 // fixed: "right",
+                // type: "sortable",
                 label: "日期",
                 // checkIfDisabled(index, val, row) {
                 //    return row.num < 10;
@@ -89,6 +90,8 @@
                             {
                                 prop: "state",
                                 label: "省份",
+                                type: "sortable",
+                                order: "descending",
                                 checkIfDisabled(index, val, row) {
                                     return row.num === 3;
                                 }
@@ -114,7 +117,7 @@
         const dateData = [{
             date: '2016-05-03',
             name: 'Timo',
-            state: 'shanghai',
+            state: 'Thanghai',
             city: 'changsha',
             address: 'No. 189, Grove St, Los Angeles',
             zip: 'CA 90036',
@@ -122,7 +125,7 @@
         }, {
             date: '2016-05-02',
             name: 'Tom',
-            state: 'California',
+            state: 'Balifornia',
             city: 'chengdu',
             address: 'No. 189, Grove St, Los Angeles',
             zip: 'CA 90036',
@@ -130,7 +133,7 @@
         }, {
             date: '2016-05-04',
             name: 'Tom',
-            state: 'California',
+            state: 'Halifornia',
             city: 'shanghai',
             address: 'No. 189, Grove St, Los Angeles',
             zip: 'CA 90036',
@@ -138,7 +141,7 @@
         }, {
             date: '2016-05-01',
             name: 'Tom',
-            state: 'California',
+            state: 'Dalifornia',
             city: 'Los Angeles',
             address: 'No. 189, Grove St, Los Angeles',
             zip: 'CA 90036',
@@ -146,7 +149,7 @@
         }, {
             date: '2016-05-08',
             name: 'Tom',
-            state: 'California',
+            state: 'Ealifornia',
             city: 'Los Angeles',
             address: 'No. 189, Grove St, Los Angeles',
             zip: 'CA 90036',
@@ -154,7 +157,7 @@
         }, {
             date: '2016-05-06',
             name: 'Tom',
-            state: 'California',
+            state: 'Falifornia',
             city: 'Los Angeles',
             address: 'No. 189, Grove St, Los Angeles',
             zip: 'CA 90036',
@@ -162,47 +165,7 @@
         }, {
             date: '2016-05-07',
             name: 'Tom',
-            state: 'California',
-            city: 'Los Angeles',
-            address: 'No. 189, Grove St, Los Angeles',
-            zip: 'CA 90036',
-            num: 7
-        }, {
-            date: '2016-05-07',
-            name: 'Tom',
-            state: 'California',
-            city: 'Los Angeles',
-            address: 'No. 189, Grove St, Los Angeles',
-            zip: 'CA 90036',
-            num: 7
-        }, {
-            date: '2016-05-07',
-            name: 'Tom',
-            state: 'California',
-            city: 'Los Angeles',
-            address: 'No. 189, Grove St, Los Angeles',
-            zip: 'CA 90036',
-            num: 7
-        }, {
-            date: '2016-05-07',
-            name: 'Tom',
-            state: 'California',
-            city: 'Los Angeles',
-            address: 'No. 189, Grove St, Los Angeles',
-            zip: 'CA 90036',
-            num: 7
-        }, {
-            date: '2016-05-07',
-            name: 'Tom',
-            state: 'California',
-            city: 'Los Angeles',
-            address: 'No. 189, Grove St, Los Angeles',
-            zip: 'CA 90036',
-            num: 7
-        }, {
-            date: '2016-05-07',
-            name: 'Tom',
-            state: 'California',
+            state: 'Galifornia',
             city: 'Los Angeles',
             address: 'No. 189, Grove St, Los Angeles',
             zip: 'CA 90036',
@@ -226,16 +189,23 @@
         let app = new Vue({
             el: "#app",
             mounted() {
-                // setTimeout(()=> {
-                //     dateData.forEach(i => {
-                //         i.num += 10;
-                //     });
-                //     setTimeout(()=> {
-                //         dateData.forEach(i => {
-                //             i.num -= 20;
-                //         })
-                //     }, 4000)
-                // }, 4000)
+                setTimeout(()=> {
+                    // this.$refs.dateTable.$scaledTable(columns => {
+                    //     columns.push({
+                    //         label: "test",
+                    //         prop: "date"
+                    //     });
+                    // })
+                    // dateData[2].num = 20;
+                    // dateData.forEach(i => {
+                    //     i.num += 10;
+                    // });
+                    // setTimeout(()=> {
+                    //     dateData.forEach(i => {
+                    //         i.num -= 20;
+                    //     })
+                    // }, 4000)
+                }, 4000)
             },
             methods: {
                 select(a, b) {
