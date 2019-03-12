@@ -1,8 +1,8 @@
 {
-  "name": "vue-datatable",
+  "name": "vuejs2-datatable",
   "version": "1.0.0",
   "description": "a data table ui for vue.js",
-  "main": "VueDataTable/dist/vue-datatable.common.js",
+  "main": "dist/vue-datatable.common.js",
   "scripts": {
     "build": "rollup -c",
     "flow": "flow",
@@ -22,8 +22,9 @@
     "@vue/babel-plugin-transform-vue-jsx": "^1.0.0-beta.2",
     "flow-bin": "^0.93.0",
     "less": "^3.9.0",
-    "rollup-plugin-babel": "^4.3.2",
-    "vue": "^2.6.6"
+    "rollup-plugin-babel": "^4.3.2"
   },
-  "dependencies": {}
+  "dependencies": {
+    "vue": "^2.6.6"
+  }
 }

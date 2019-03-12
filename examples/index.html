@@ -69,19 +69,20 @@
                         prop: "num",
                         label: "姓名",
                         width: 180,
-                        type: "sortable",
-                        order: "descending",
-                        // render: {
-                        //     name: "sp",
-                        //     props: ["index", "val", "row"],
-                        //     render(h) {
-                        //         return h("span", {
-                        //             style: {
-                        //                 color: this.val === 3 ? "red" : "black"
-                        //             }
-                        //         }, this.val);
-                        //     }
-                        // }
+                        // type: "sortable",
+                        // order: "descending",
+                        render: {
+                            name: "sp",
+                            props: ["index", "val", "row"],
+                            template: "<p>1234</p>"
+                            // render(h) {
+                            //     return h("span", {
+                            //         style: {
+                            //             color: this.val === 3 ? "red" : "black"
+                            //         }
+                            //     }, this.val);
+                            // }
+                        }
                     },
                     {
                         prop: "state",
