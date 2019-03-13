@@ -11,7 +11,7 @@ var TableColgroup = {
     return h("colgroup", [this.columns.map(function (column) {
       return h("col", {
         "style": {
-          width: column.width
+          width: column.width + "px"
         }
       });
     })]);
