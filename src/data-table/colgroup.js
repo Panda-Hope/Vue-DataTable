@@ -6,7 +6,6 @@ export default {
             <colgroup>
                 {
                     this.columns.map(column => {
-                        console.log(column.width);
                         return (
                             <col style={{width: column.width + "px"}} />
                         );

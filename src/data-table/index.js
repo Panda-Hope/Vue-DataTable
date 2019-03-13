@@ -204,7 +204,6 @@ export default ({
                     ticking = false;
                 };
                 let scroll = () => {
-
                     if (!ticking) {
                         window.requestAnimationFrame(scrollTo);
                         ticking = true;

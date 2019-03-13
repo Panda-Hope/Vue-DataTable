@@ -1,6 +1,6 @@
 {
   "name": "vuejs2-datatable",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "a data table ui for vue.js",
   "main": "dist/vue-datatable.common.js",
   "scripts": {

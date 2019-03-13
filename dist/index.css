@@ -288,6 +288,9 @@
 .d-table-wrapper .d-table-fixed-left {
   left: 0;
 }
+.d-table-wrapper .d-table-fixed-left ::-webkit-scrollbar {
+  display: none;
+}
 .d-table-wrapper .d-table-fixed-right {
   right: 0;
 }
