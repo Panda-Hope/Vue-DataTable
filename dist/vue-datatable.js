@@ -8,9 +8,10 @@ var VueDataTable = (function (Vue) {
       props: ["columns"],
       render: function render(h) {
         return h("colgroup", [this.columns.map(function (column) {
+          console.log(column.width);
           return h("col", {
             "style": {
-              width: column.width
+              width: column.width + "px"
             }
           });
         })]);
