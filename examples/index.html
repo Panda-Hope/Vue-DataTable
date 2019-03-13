@@ -16,10 +16,10 @@
     <div id="app">
         <Date-Table :scroll-width="2600" ref="dateTable" :data="dateData" border style="margin-top: 20px"></Date-Table>
         <!--<Date-Table :data="dateData2" style="margin-top: 20px" border></Date-Table>-->
-        <!--<Name-Table :data="dateData" style="margin-top: 20px" border></Name-Table>-->
+        <Name-Table :data="dateData" style="margin-top: 20px" border></Name-Table>
     </div>
 
-    <script src="../dist/vue-datatable.js"></script>
+    <script src="https://unpkg.com/vuejs2-datatable@1.0.0/dist/vue-datatable.js"></script>
     <script>
         const NameTable = VueDataTable.Create([
             {

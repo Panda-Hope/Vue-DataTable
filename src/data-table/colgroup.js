@@ -7,7 +7,7 @@ export default {
                 {
                     this.columns.map(column => {
                         return (
-                            <col style={{width: column.width}} />
+                            <col style={{width: column.width + "px"}} />
                         );
                     })
                 }
