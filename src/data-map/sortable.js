@@ -65,6 +65,13 @@ function sortable(el: Object, vm: Object): void {
     if (!vm.sortingColumns) vm.sortingColumns = [];
     vm.sortingColumns.push(el);
 
+    /* 设置初次选中排序列 */
+    if (!vm.sortingColumn) {
+        if (el.order) vm.sortingColumn = el.prop;
+    }else {
+        el.order = undefined;
+    }
+
     /* 将Order设置成响应式数据 */
     Vue.set(el, "order", el.order);
 

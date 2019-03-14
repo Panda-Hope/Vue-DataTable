@@ -41,6 +41,33 @@ function getColumns(level: Array<Object>, columns: Array<Object>): void {
     }
 }
 
+/*
+ * 表格同步滚动
+ * a：滚动项, b、c 同步滚动项 */
+function keepScroll(a, b, c) {
+    let ticking = false;
+
+    let scrollTo = () => {
+        if (a.scrollTop < b.scrollTop) {
+            b.scrollTop = c.scrollTop = --a.scrollTop;
+            window.requestAnimationFrame(scrollTo);
+        }else if (a.scrollTop > b.scrollTop) {
+            b.scrollTop = c.scrollTop = ++a.scrollTop;
+            window.requestAnimationFrame(scrollTo);
+        }
+
+        ticking = false;
+    };
+    let scroll = () => {
+        if (!ticking) {
+            window.requestAnimationFrame(scrollTo);
+            ticking = true;
+        }
+    };
+
+    addEvent(a, 'scroll', scroll);
+}
+
 /* 执行先序遍历，获取空白列属性，用于固定列结构 */
 function getBlankColumn(el: Object, column: Object): void {
     column._rowspan = el._rowspan;
@@ -187,30 +214,13 @@ export default ({
         /* 确保固定表格同步滚动 */
         registerScrollWatcher() {
             this.$nextTick(function () {
-                let ticking = false;
-                let scrollTo = () => {
-                    let leftWrapper = this.$refs.leftHorScrollWrapper;
-                    let rightWrapper = this.$refs.rightHorScrollWrapper;
-                    let wrapper = this.$refs.horScrollWrapper;
+                let leftWrapper = this.$refs.leftHorScrollWrapper;
+                let rightWrapper = this.$refs.rightHorScrollWrapper;
+                let wrapper = this.$refs.horScrollWrapper;
 
-                    if (leftWrapper.scrollTop < wrapper.scrollTop) {
-                        leftWrapper.scrollTop = rightWrapper.scrollTop = --wrapper.scrollTop;
-                        window.requestAnimationFrame(scrollTo);
-                    }else if (leftWrapper.scrollTop > wrapper.scrollTop) {
-                        leftWrapper.scrollTop = rightWrapper.scrollTop = ++wrapper.scrollTop;
-                        window.requestAnimationFrame(scrollTo);
-                    }
-
-                    ticking = false;
-                };
-                let scroll = () => {
-                    if (!ticking) {
-                        window.requestAnimationFrame(scrollTo);
-                        ticking = true;
-                    }
-                };
-
-                addEvent(this.$refs.horScrollWrapper, "scroll", scroll);
+                keepScroll(wrapper, leftWrapper, rightWrapper);
+                keepScroll(leftWrapper, wrapper, rightWrapper);
+                keepScroll(rightWrapper, wrapper, leftWrapper);
             });
         }
     },
