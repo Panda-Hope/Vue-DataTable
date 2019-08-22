@@ -25,7 +25,6 @@
     "rollup-plugin-babel": "^4.3.2"
   },
   "dependencies": {
-    "loadsh": "^0.0.4",
     "vue": "^2.6.6"
   }
 }
