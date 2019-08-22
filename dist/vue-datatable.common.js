@@ -196,6 +196,35 @@ function getColumns(level, columns) {
     el.subs ? getColumns(el.subs, columns) : columns.push(el);
   }
 }
+/*
+ * 表格同步滚动
+ * a：滚动项, b、c 同步滚动项 */
+
+
+function keepScroll(a, b, c) {
+  var ticking = false;
+
+  var scrollTo = function scrollTo() {
+    if (a.scrollTop < b.scrollTop) {
+      b.scrollTop = c.scrollTop = --a.scrollTop;
+      window.requestAnimationFrame(scrollTo);
+    } else if (a.scrollTop > b.scrollTop) {
+      b.scrollTop = c.scrollTop = ++a.scrollTop;
+      window.requestAnimationFrame(scrollTo);
+    }
+
+    ticking = false;
+  };
+
+  var scroll = function scroll() {
+    if (!ticking) {
+      window.requestAnimationFrame(scrollTo);
+      ticking = true;
+    }
+  };
+
+  addEvent(a, 'scroll', scroll);
+}
 /* 执行先序遍历，获取空白列属性，用于固定列结构 */
 
 
@@ -363,34 +392,12 @@ var DataTable = {
     /* 确保固定表格同步滚动 */
     registerScrollWatcher: function registerScrollWatcher() {
       this.$nextTick(function () {
-        var _this3 = this;
-
-        var ticking = false;
-
-        var scrollTo = function scrollTo() {
-          var leftWrapper = _this3.$refs.leftHorScrollWrapper;
-          var rightWrapper = _this3.$refs.rightHorScrollWrapper;
-          var wrapper = _this3.$refs.horScrollWrapper;
-
-          if (leftWrapper.scrollTop < wrapper.scrollTop) {
-            leftWrapper.scrollTop = rightWrapper.scrollTop = --wrapper.scrollTop;
-            window.requestAnimationFrame(scrollTo);
-          } else if (leftWrapper.scrollTop > wrapper.scrollTop) {
-            leftWrapper.scrollTop = rightWrapper.scrollTop = ++wrapper.scrollTop;
-            window.requestAnimationFrame(scrollTo);
-          }
-
-          ticking = false;
-        };
-
-        var scroll = function scroll() {
-          if (!ticking) {
-            window.requestAnimationFrame(scrollTo);
-            ticking = true;
-          }
-        };
-
-        addEvent(this.$refs.horScrollWrapper, "scroll", scroll);
+        var leftWrapper = this.$refs.leftHorScrollWrapper;
+        var rightWrapper = this.$refs.rightHorScrollWrapper;
+        var wrapper = this.$refs.horScrollWrapper;
+        keepScroll(wrapper, leftWrapper, rightWrapper);
+        keepScroll(leftWrapper, wrapper, rightWrapper);
+        keepScroll(rightWrapper, wrapper, leftWrapper);
       });
     }
   },
@@ -947,7 +954,15 @@ function sortable(el, vm) {
 
   if (!vm.sortingColumns) vm.sortingColumns = [];
   vm.sortingColumns.push(el);
+  /* 设置初次选中排序列 */
+
+  if (!vm.sortingColumn) {
+    if (el.order) vm.sortingColumn = el.prop;
+  } else {
+    el.order = undefined;
+  }
   /* 将Order设置成响应式数据 */
+
 
   Vue.set(el, "order", el.order);
 

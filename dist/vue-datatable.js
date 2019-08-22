@@ -396,30 +396,7 @@ var VueDataTable = (function (Vue) {
             var wrapper = this.$refs.horScrollWrapper;
             keepScroll(wrapper, leftWrapper, rightWrapper);
             keepScroll(leftWrapper, wrapper, rightWrapper);
-            keepScroll(rightWrapper, wrapper, leftWrapper); // let ticking = false;
-            // let scrollTo = () => {
-            //     let leftWrapper = this.$refs.leftHorScrollWrapper;
-            //     let rightWrapper = this.$refs.rightHorScrollWrapper;
-            //     let wrapper = this.$refs.horScrollWrapper;
-            //
-            //     if (leftWrapper.scrollTop < wrapper.scrollTop) {
-            //         leftWrapper.scrollTop = rightWrapper.scrollTop = --wrapper.scrollTop;
-            //         window.requestAnimationFrame(scrollTo);
-            //     }else if (leftWrapper.scrollTop > wrapper.scrollTop) {
-            //         leftWrapper.scrollTop = rightWrapper.scrollTop = ++wrapper.scrollTop;
-            //         window.requestAnimationFrame(scrollTo);
-            //     }
-            //
-            //     ticking = false;
-            // };
-            // let scroll = () => {
-            //     if (!ticking) {
-            //         window.requestAnimationFrame(scrollTo);
-            //         ticking = true;
-            //     }
-            // };
-            //
-            // addEvent(this.$refs.horScrollWrapper, "scroll", scroll);
+            keepScroll(rightWrapper, wrapper, leftWrapper);
           });
         }
       },
